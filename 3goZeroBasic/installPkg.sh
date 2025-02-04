@@ -11,3 +11,6 @@ goctl rpc new user
 
 #根据指定proto创建微服务项目
 goctl rpc  protoc .\user.proto --go_out=. --go-grpc_out=. --zrpc_out=.
+
+#根据指定的api生成api服务
+goctl api go -api .\user.api -dir. -style gozero
