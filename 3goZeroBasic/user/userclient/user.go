@@ -20,6 +20,7 @@ type (
 	User interface {
 		// 定义rpc方法
 		GetUser(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserResp, error)
+		Ping(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserResp, error)
 	}
 
 	defaultUser struct {
@@ -37,4 +38,9 @@ func NewUser(cli zrpc.Client) User {
 func (m *defaultUser) GetUser(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.GetUser(ctx, in, opts...)
+}
+
+func (m *defaultUser) Ping(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.Ping(ctx, in, opts...)
 }
