@@ -20,6 +20,7 @@ const _ = grpc.SupportPackageIsVersion9
 
 const (
 	User_GetUser_FullMethodName = "/user.User/GetUser"
+	User_Create_FullMethodName  = "/user.User/Create"
 	User_Ping_FullMethodName    = "/user.User/Ping"
 )
 
@@ -29,6 +30,7 @@ const (
 type UserClient interface {
 	// 定义rpc方法
 	GetUser(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserResp, error)
+	Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*CreateResp, error)
 	Ping(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserResp, error)
 }
 
@@ -44,6 +46,16 @@ func (c *userClient) GetUser(ctx context.Context, in *GetUserReq, opts ...grpc.C
 	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
 	out := new(GetUserResp)
 	err := c.cc.Invoke(ctx, User_GetUser_FullMethodName, in, out, cOpts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *userClient) Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*CreateResp, error) {
+	cOpts := append([]grpc.CallOption{grpc.StaticMethod()}, opts...)
+	out := new(CreateResp)
+	err := c.cc.Invoke(ctx, User_Create_FullMethodName, in, out, cOpts...)
 	if err != nil {
 		return nil, err
 	}
@@ -66,6 +78,7 @@ func (c *userClient) Ping(ctx context.Context, in *GetUserReq, opts ...grpc.Call
 type UserServer interface {
 	// 定义rpc方法
 	GetUser(context.Context, *GetUserReq) (*GetUserResp, error)
+	Create(context.Context, *CreateReq) (*CreateResp, error)
 	Ping(context.Context, *GetUserReq) (*GetUserResp, error)
 	mustEmbedUnimplementedUserServer()
 }
@@ -79,6 +92,9 @@ type UnimplementedUserServer struct{}
 
 func (UnimplementedUserServer) GetUser(context.Context, *GetUserReq) (*GetUserResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetUser not implemented")
+}
+func (UnimplementedUserServer) Create(context.Context, *CreateReq) (*CreateResp, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method Create not implemented")
 }
 func (UnimplementedUserServer) Ping(context.Context, *GetUserReq) (*GetUserResp, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method Ping not implemented")
@@ -122,6 +138,24 @@ func _User_GetUser_Handler(srv interface{}, ctx context.Context, dec func(interf
 	return interceptor(ctx, in, info, handler)
 }
 
+func _User_Create_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(CreateReq)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(UserServer).Create(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: User_Create_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(UserServer).Create(ctx, req.(*CreateReq))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 func _User_Ping_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
 	in := new(GetUserReq)
 	if err := dec(in); err != nil {
@@ -150,6 +184,10 @@ var User_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "GetUser",
 			Handler:    _User_GetUser_Handler,
+		},
+		{
+			MethodName: "Create",
+			Handler:    _User_Create_Handler,
 		},
 		{
 			MethodName: "Ping",

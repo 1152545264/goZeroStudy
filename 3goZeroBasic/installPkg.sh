@@ -14,3 +14,6 @@ goctl rpc  protoc .\user.proto --go_out=. --go-grpc_out=. --zrpc_out=.
 
 #根据指定的api生成api服务
 goctl api go -api .\user.api -dir. -style gozero
+
+#根据指定的sql文件创建数据库代码
+goctl model mysql ddl --src .\user.sql --dir "./models/" -c

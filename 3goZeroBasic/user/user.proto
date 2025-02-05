@@ -5,12 +5,6 @@ package user; //默认包名
 //包名
 option go_package = "./user";
 
-service User{
-  //定义rpc方法
-  rpc GetUser(GetUserReq) returns (GetUserResp);
-  rpc Ping(GetUserReq) returns (GetUserResp);
-}
-
 message GetUserReq{
   //属性的类型 属性名 = 标识符;
   string  Id = 1;
@@ -20,4 +14,23 @@ message GetUserResp{
   string Id = 1;
   string Name = 2;
   string Phone = 3;
+}
+
+message  CreateReq{
+  string id = 1;
+  string name = 2;
+  string phone = 3;
+}
+
+message CreateResp{
+
+}
+
+service User{
+  //定义rpc方法
+  rpc GetUser(GetUserReq) returns (GetUserResp);
+
+  rpc Create(CreateReq) returns (CreateResp);
+
+  rpc Ping(GetUserReq) returns (GetUserResp);
 }

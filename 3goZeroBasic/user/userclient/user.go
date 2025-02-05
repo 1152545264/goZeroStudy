@@ -14,12 +14,15 @@ import (
 )
 
 type (
+	CreateReq   = user.CreateReq
+	CreateResp  = user.CreateResp
 	GetUserReq  = user.GetUserReq
 	GetUserResp = user.GetUserResp
 
 	User interface {
 		// 定义rpc方法
 		GetUser(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserResp, error)
+		Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*CreateResp, error)
 		Ping(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserResp, error)
 	}
 
@@ -38,6 +41,11 @@ func NewUser(cli zrpc.Client) User {
 func (m *defaultUser) GetUser(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserResp, error) {
 	client := user.NewUserClient(m.cli.Conn())
 	return client.GetUser(ctx, in, opts...)
+}
+
+func (m *defaultUser) Create(ctx context.Context, in *CreateReq, opts ...grpc.CallOption) (*CreateResp, error) {
+	client := user.NewUserClient(m.cli.Conn())
+	return client.Create(ctx, in, opts...)
 }
 
 func (m *defaultUser) Ping(ctx context.Context, in *GetUserReq, opts ...grpc.CallOption) (*GetUserResp, error) {
