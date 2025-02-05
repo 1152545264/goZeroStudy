@@ -10,23 +10,22 @@ import (
 	"github.com/zeromicro/go-zero/core/logx"
 )
 
-type UserLogic struct {
+type UserinfoLogic struct {
 	logx.Logger
 	ctx    context.Context
 	svcCtx *svc.ServiceContext
 }
 
-func NewUserLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserLogic {
-	return &UserLogic{
+func NewUserinfoLogic(ctx context.Context, svcCtx *svc.ServiceContext) *UserinfoLogic {
+	return &UserinfoLogic{
 		Logger: logx.WithContext(ctx),
 		ctx:    ctx,
 		svcCtx: svcCtx,
 	}
 }
 
-func (l *UserLogic) User(req *types.UserReq) (resp *types.UserResp, err error) {
+func (l *UserinfoLogic) Userinfo(req *types.UserReq) (resp *types.UserResp, err error) {
 	// todo: add your logic here and delete this line
-	//resp = &types.UserResp{Id: "666", Name: "test", Phone: "testPhone"}
 
 	getUserResp, err := l.svcCtx.UserClient.GetUser(l.ctx, &userclient.GetUserReq{
 		Id: req.Id,
