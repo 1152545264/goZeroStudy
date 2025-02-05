@@ -3,8 +3,8 @@ Host: 0.0.0.0
 Port: 8888
 
 
-UserRPC:
+UserRpc:
   Etcd:
-    Host:
+    Hosts:
       - 127.0.0.1:2379
     Key: user.rpc
